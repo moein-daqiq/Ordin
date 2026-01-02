@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Organisation profile — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+  <style>
+    .wizard-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+    @media (max-width: 980px){.wizard-grid{grid-template-columns:1fr}}
+    .stepper{border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px}
+    .stepper h3{margin:0 0 10px}
+    .steps{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+    .step{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:12px}
+    .step.active{border-color:rgba(11,18,32,.25);box-shadow:0 6px 20px rgba(15,23,42,.06)}
+    .step.done{border-color:rgba(22,163,74,.35)}
+    .num{
+      width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+      font-weight:800;font-size:13px;border:2px solid var(--line);color:var(--muted);
+    }
+    .step.active .num{border-color:var(--btn);color:var(--btn)}
+    .step.done .num{border-color:var(--good);background:rgba(22,163,74,.12);color:var(--good)}
+    .step .meta{flex:1}
+    .step .title{font-weight:800}
+    .step .desc{color:var(--muted);font-size:13px;margin-top:3px}
+    .hint{border:1px dashed rgba(11,18,32,.25);border-radius:14px;padding:12px;background:rgba(11,18,32,.02)}
+    .hint strong{display:block;margin-bottom:4px}
+    .form-card{border:1px solid var(--line);border-radius:14px;background:#fff;padding:16px}
+    .form-card h1{margin:0}
+    .sub{color:var(--muted);margin-top:6px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width: 860px){.grid-2{grid-template-columns:1fr}}
+    .actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}
+    .req{color:var(--bad);font-weight:700}
+    .err{color:var(--bad);font-size:13px;margin-top:6px;display:none}
+    .summary{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+    .summary .rowx{display:grid;grid-template-columns:180px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+    .summary .rowx:last-child{border-bottom:none}
+    .summary .k{color:var(--muted);font-size:13px}
+    .summary .v{font-weight:600}
+    .chk{display:flex;gap:10px;align-items:flex-start;margin-top:12px}
+    .chk input{margin-top:3px}
+
+    /* --- Progress card (Deel-like) --- */
+    .progress-card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin-top:12px;
+    }
+    .ring{
+      width:140px;height:140px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      background: conic-gradient(var(--btn) 0deg, var(--line) 0deg);
+    }
+    .ring .inner{
+      width:112px;height:112px;border-radius:999px;background:var(--card);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:22px;color:var(--ink);
+      border:1px solid var(--line);
+    }
+    .muted-sm{color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="dashboard.html">Back to dashboard</a>
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-bottom:24px;">
+  <div class="wizard-grid">
+
+    <!-- LEFT: FORM -->
+    <section class="form-card">
+      <h1>Tell us about your organisation</h1>
+      <p class="sub">A few details to keep contracts, onboarding and audit logs consistent (UK-first).</p>
+
+      <!-- STEP 1 -->
+      <div id="step1">
+        <h2 style="margin:16px 0 8px;">1) Your organisation</h2>
+
+        <div class="grid-2">
+          <div>
+            <div class="label">Organisation name <span class="req">*</span></div>
+            <input id="org_name" class="input" placeholder="ORDIN" />
+          </div>
+          <div>
+            <div class="label">Website (optional)</div>
+            <input id="org_website" class="input" placeholder="https://ordin.uk" />
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div class="label">Describe the products or services you sell <span class="req">*</span></div>
+          <textarea id="org_desc" class="input" rows="4"
+            placeholder="Example: ORDIN provides UK-first contractor onboarding, contracts and compliance readiness for employers."></textarea>
+          <div class="err" id="err_desc">Please add a short description.</div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div class="label">What type of work will your contractors perform? <span class="req">*</span></div>
+          <textarea id="org_contractor_work" class="input" rows="4"
+            placeholder="Example: Contractors will provide software development, design, data analysis, or project-based services."></textarea>
+          <div class="err" id="err_work">Please describe the contractor work.</div>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <div class="label">Company LinkedIn (optional)</div>
+            <input id="org_linkedin" class="input" placeholder="https://www.linkedin.com/company/..." />
+          </div>
+          <div>
+            <div class="label">Your LinkedIn (optional)</div>
+            <input id="admin_linkedin" class="input" placeholder="https://www.linkedin.com/in/..." />
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div id="step2" style="display:none;">
+        <h2 style="margin:16px 0 8px;">2) Point of contact</h2>
+
+        <div class="grid-2">
+          <div>
+            <div class="label">Primary contact name <span class="req">*</span></div>
+            <input id="pc_name" class="input" placeholder="Full name" />
+            <div class="err" id="err_pcname">Name is required.</div>
+          </div>
+          <div>
+            <div class="label">Primary contact email <span class="req">*</span></div>
+            <input id="pc_email" class="input" placeholder="name@ordin.uk" />
+            <div class="err" id="err_pcemail">Valid email is required.</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <div class="label">Phone (optional)</div>
+            <input id="pc_phone" class="input" placeholder="+44…" />
+          </div>
+          <div>
+            <div class="label">Role (optional)</div>
+            <input id="pc_role" class="input" placeholder="Founder / Operations / HR…" />
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div class="label">Registered address (UK) <span class="req">*</span></div>
+          <div class="grid-2" style="margin-top:6px;">
+            <input id="addr1" class="input" placeholder="Address line 1" />
+            <input id="addr2" class="input" placeholder="Address line 2 (optional)" />
+          </div>
+          <div class="grid-2" style="margin-top:10px;">
+            <input id="city" class="input" placeholder="City" />
+            <input id="postcode" class="input" placeholder="Postcode" />
+          </div>
+          <div class="err" id="err_addr">Address line 1, city and postcode are required.</div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div id="step3" style="display:none;">
+        <h2 style="margin:16px 0 8px;">3) Review and submit</h2>
+
+        <div class="summary" id="summary"></div>
+
+        <div class="chk">
+          <input type="checkbox" id="confirm" />
+          <label for="confirm" class="muted">
+            I confirm these details are accurate for my organisation and will be used for onboarding and contracts.
+          </label>
+        </div>
+        <div class="err" id="err_confirm">Please confirm to continue.</div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="actions">
+        <button class="btn" id="btnBack">Back</button>
+        <button class="btn primary" id="btnNext">Continue</button>
+      </div>
+
+      <p id="msg" class="muted" style="margin-top:10px;"></p>
+    </section>
+
+    <!-- RIGHT: STEPPER + PROGRESS + HINT -->
+    <aside>
+      <div class="stepper">
+        <h3>Organisation setup</h3>
+        <ul class="steps">
+          <li class="step active" id="st1">
+            <div class="num">1</div>
+            <div class="meta">
+              <div class="title">Your organisation</div>
+              <div class="desc">Business description & online presence</div>
+            </div>
+          </li>
+          <li class="step" id="st2">
+            <div class="num">2</div>
+            <div class="meta">
+              <div class="title">Point of contact</div>
+              <div class="desc">Primary contact & registered address</div>
+            </div>
+          </li>
+          <li class="step" id="st3">
+            <div class="num">3</div>
+            <div class="meta">
+              <div class="title">Review & submit</div>
+              <div class="desc">Confirm and save</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Progress indicator (0 / 25 / 50 / 100) -->
+      <div class="progress-card">
+        <div class="muted-sm">Get started with ORDIN</div>
+        <div class="ring" id="progRing">
+          <div class="inner"><span id="progPct">0%</span></div>
+        </div>
+        <div class="muted-sm" id="progText">0 of 3 steps completed</div>
+      </div>
+
+      <div class="hint">
+        <strong>Why we ask this</strong>
+        <div class="muted" style="font-size:13px;">
+          ORDIN is UK-first infrastructure. These details help generate consistent contracts, maintain compliance readiness,
+          and keep an auditable employer record. Billing is not enabled in v1.
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<script src="../js/app.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/org_wizard.js"></script>
+</body>
+</html>

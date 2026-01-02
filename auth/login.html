@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="../role.html">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card" style="max-width:560px;margin:18px auto;">
+    <h1>Login</h1>
+    <p class="muted">Use your email and password.</p>
+
+    <!-- FORM -->
+    <div class="label">Email</div>
+    <input id="email" class="input" placeholder="you@company.co.uk" />
+
+    <div class="label">Password</div>
+    <input id="pass" class="input" type="password" placeholder="••••••••" />
+
+    <div class="row gap-10 wrap" style="margin-top:14px;">
+      <button id="btnLogin" class="btn primary">Login</button>
+      <a class="btn" href="employer-signup.html">Create employer account</a>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="note">
+      <strong>Demo accounts</strong><br/>
+      Admin: admin@ordin.uk / admin
+    </div>
+
+    <div class="row gap-10 wrap" style="margin-top:12px;">
+      <button id="btnReset" class="btn">Reset demo data</button>
+    </div>
+
+    <p id="err" class="muted" style="color:var(--bad);margin-top:12px;"></p>
+  </section>
+</main>
+
+<script src="../js/app.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const email = UI.qs("#email");
+  const pass = UI.qs("#pass");
+  const err = UI.qs("#err");
+
+  UI.qs("#btnLogin").onclick = () => {
+    err.textContent = "";
+    const r = ORDIN.login(email.value.trim(), pass.value);
+    if (!r.ok) { err.textContent = r.error; return; }
+
+    const role = r.user.role;
+    if (role === "EMPLOYER") UI.redirect("../employer/dashboard.html");
+    else if (role === "CONTRACTOR") UI.redirect("../contractor/dashboard.html");
+    else UI.redirect("../admin/templates.html");
+  };
+
+  UI.qs("#btnReset").onclick = () => {
+    ORDIN.resetDemo();
+    UI.toast("Demo reset complete");
+  };
+</script>
+</body>
+</html>

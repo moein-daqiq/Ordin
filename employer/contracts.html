@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contracts — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a href="dashboard.html">Overview</a>
+    <a href="contractors.html">Contractors</a>
+    <a class="active" href="contracts.html">Contracts</a>
+    <a href="settings.html">Organisation settings</a>
+  </aside>
+
+  <section class="card">
+    <h1 class="m0">Contracts</h1>
+    <p class="muted">v1 demo — list contracts and status.</p>
+
+    <table class="table" style="margin-top:10px;">
+      <thead>
+        <tr>
+          <th>Contractor</th>
+          <th>Status</th>
+          <th>Sent</th>
+          <th>Signed</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+</main>
+
+<script src="../js/app.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["EMPLOYER"], "../auth/login.html");
+  if (!s) throw new Error("Not authorised");
+
+  const { db, org } = ORDIN.getMyContext();
+  const engs = db.engagements.filter(e => e.organisationId === org.id);
+  const tbody = UI.qs("#rows");
+  tbody.innerHTML = "";
+
+  let found = 0;
+
+  engs.forEach(e => {
+    const ctr = db.contractors.find(c => c.id === e.contractorId);
+    const c = db.contracts.find(x => x.engagementId === e.id);
+    if (!c) return;
+
+    found++;
+    tbody.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td>${UI.esc(ctr ? (ctr.first_name + " " + ctr.last_name) : "—")}</td>
+        <td>${UI.esc(c.status || "—")}</td>
+        <td>${UI.esc(c.sentAt || "—")}</td>
+        <td>${UI.esc(c.signedAt || "—")}</td>
+        <td><a class="btn" href="contractor-detail.html?eng=${encodeURIComponent(e.id)}">Open</a></td>
+      </tr>
+    `);
+  });
+
+  if (found === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="muted">No contracts yet.</td></tr>`;
+  }
+
+  UI.qs("#btnLogout").onclick = () => {
+    ORDIN.logout();
+    UI.redirect("../index.html");
+  };
+</script>
+</body>
+</html>

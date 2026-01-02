@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Audit log — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a href="templates.html">Contract templates</a>
+    <a class="active" href="audit.html">Audit log</a>
+  </aside>
+
+  <section class="card">
+    <h1 class="m0">Admin: Audit log</h1>
+    <p class="muted">Read-only event trail (demo).</p>
+
+    <table class="table" style="margin-top:10px;">
+      <thead><tr><th>Time</th><th>Event</th><th>Data</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["ADMIN"], "../auth/login.html");
+  if (!s) return;
+
+  const db = ORDIN.load();
+  const rows = UI.qs("#rows");
+  rows.innerHTML = db.audit.length
+    ? db.audit.slice().reverse().slice(0,100).map(e=>`
+      <tr>
+        <td>${UI.esc(e.at)}</td>
+        <td>${UI.esc(e.eventType)}</td>
+        <td><code>${UI.esc(JSON.stringify(e.data))}</code></td>
+      </tr>
+    `).join("")
+    : `<tr><td colspan="3" class="muted">No events yet.</td></tr>`;
+
+  UI.qs("#btnLogout").onclick = () => { ORDIN.logout(); UI.redirect("../index.html"); };
+</script>
+</body>
+</html>

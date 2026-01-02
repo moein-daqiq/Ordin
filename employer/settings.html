@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Organisation settings — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a href="dashboard.html">Overview</a>
+    <a href="contractors.html">Contractors</a>
+    <a href="contracts.html">Contracts</a>
+    <a class="active" href="settings.html">Organisation settings</a>
+  </aside>
+
+  <section class="card">
+    <h1 class="m0">Organisation settings</h1>
+    <p class="muted">v1: company profile + primary contact. Billing is future (v1.1).</p>
+
+    <div class="hr"></div>
+
+    <h2>Company</h2>
+    <div class="label">Company name</div>
+    <input id="name" class="input" />
+
+    <div class="grid-2">
+      <div>
+        <div class="label">Registered address line 1</div>
+        <input id="a1" class="input" />
+      </div>
+      <div>
+        <div class="label">Registered address line 2</div>
+        <input id="a2" class="input" />
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="label">City</div>
+        <input id="city" class="input" />
+      </div>
+      <div>
+        <div class="label">Postcode</div>
+        <input id="pc" class="input" />
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <h2>Primary contact</h2>
+    <div class="grid-2">
+      <div>
+        <div class="label">Name</div>
+        <input id="cn" class="input" />
+      </div>
+      <div>
+        <div class="label">Email</div>
+        <input id="ce" class="input" />
+      </div>
+    </div>
+
+    <div class="row gap-10 wrap" style="margin-top:14px;">
+      <button id="btnSave" class="btn primary">Save</button>
+      <span class="badge warn">Billing & payments: coming soon</span>
+    </div>
+
+    <p id="msg" class="muted" style="margin-top:10px;"></p>
+  </section>
+</main>
+
+<script src="../js/app.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["EMPLOYER"], "../auth/login.html");
+  if (!s) throw new Error("Not authorised");
+
+  const name = UI.qs("#name");
+  const a1 = UI.qs("#a1");
+  const a2 = UI.qs("#a2");
+  const city = UI.qs("#city");
+  const pc = UI.qs("#pc");
+  const cn = UI.qs("#cn");
+  const ce = UI.qs("#ce");
+  const msg = UI.qs("#msg");
+
+  function load() {
+    const { org } = ORDIN.getMyContext();
+    name.value = org?.name || "";
+    a1.value = org?.registered_address_line1 || "";
+    a2.value = org?.registered_address_line2 || "";
+    city.value = org?.city || "";
+    pc.value = org?.postcode || "";
+    cn.value = org?.primary_contact_name || "";
+    ce.value = org?.primary_contact_email || "";
+  }
+
+  load();
+
+  UI.qs("#btnSave").onclick = () => {
+    const { db, org } = ORDIN.getMyContext();
+    const o = db.orgs.find(x => x.id === org.id);
+    if (!o) {
+      msg.textContent = "Organisation record not found.";
+      msg.style.color = "var(--bad)";
+      return;
+    }
+
+    o.name = name.value.trim();
+    o.registered_address_line1 = a1.value.trim();
+    o.registered_address_line2 = a2.value.trim();
+    o.city = city.value.trim();
+    o.postcode = pc.value.trim();
+    o.primary_contact_name = cn.value.trim();
+    o.primary_contact_email = ce.value.trim();
+
+    ORDIN.save(db);
+
+    msg.textContent = "Saved successfully.";
+    msg.style.color = "var(--good)";
+    UI.toast("Saved");
+  };
+
+  UI.qs("#btnLogout").onclick = () => {
+    ORDIN.logout();
+    UI.redirect("../index.html");
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Templates — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a class="active" href="templates.html">Contract templates</a>
+    <a href="audit.html">Audit log</a>
+  </aside>
+
+  <section class="card">
+    <h1 class="m0">Admin: Contract templates</h1>
+    <p class="muted">Demo-only. v1 production would store template versions and generate PDFs.</p>
+
+    <div class="note">
+      Admin login: <strong>admin@ordin.uk</strong> / <strong>admin</strong>
+    </div>
+
+    <div class="hr"></div>
+
+    <h2>Default template</h2>
+    <textarea class="input" style="min-height:220px;white-space:pre-wrap" disabled>
+Independent Contractor Agreement (Demo)
+
+This agreement is between Employer and Contractor.
+The Contractor confirms they operate as an independent contractor and are responsible for their own tax obligations.
+ORDIN provides onboarding tasks, contract storage, and audit logs.
+    </textarea>
+  </section>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["ADMIN"], "../auth/login.html");
+  if (!s) return;
+  UI.qs("#btnLogout").onclick = () => { ORDIN.logout(); UI.redirect("../index.html"); };
+</script>
+</body>
+</html>

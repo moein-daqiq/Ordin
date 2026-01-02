@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contract — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="tasks.html">Back</a>
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a href="dashboard.html">Task hub</a>
+    <a href="tasks.html">Tasks</a>
+    <a class="active" href="contract.html">Contract</a>
+    <a href="documents.html">Documents</a>
+    <a href="profile.html">Profile</a>
+  </aside>
+
+  <section class="card">
+    <h1 class="m0">Contract</h1>
+    <p class="muted" id="sub"></p>
+
+    <div class="hr"></div>
+
+    <div class="kv">
+      <div class="muted">Status</div><div><strong id="status">—</strong></div>
+      <div class="muted">Sent</div><div id="sent">—</div>
+      <div class="muted">Signed</div><div id="signed">—</div>
+    </div>
+
+    <div class="hr"></div>
+
+    <h2>Contract preview (demo)</h2>
+    <div class="feature">
+      <p class="muted">
+        This is a placeholder contract preview. In v1 production, this comes from a template and produces a PDF.
+      </p>
+      <ul class="list">
+        <li>Independent contractor engagement</li>
+        <li>UK-first onboarding & declarations</li>
+        <li>Audit trail enabled</li>
+      </ul>
+    </div>
+
+    <div class="row gap-10 wrap" style="margin-top:14px;">
+      <button class="btn primary" id="btnReview">Mark as reviewed</button>
+      <button class="btn" id="btnSign">Sign contract</button>
+    </div>
+
+    <div class="note" style="margin-top:12px;">
+      Signing will update readiness when required tasks are complete.
+    </div>
+  </section>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["CONTRACTOR"], "../auth/login.html");
+  if (!s) return;
+
+  const ctx = ORDIN.getMyContext();
+  const db = ctx.db, eng = ctx.engagement, org = ctx.org;
+
+  UI.qs("#sub").textContent = `Employer: ${org?.name || "—"}`;
+
+  const contract = db.contracts.find(c=>c.engagementId===eng.id);
+  UI.qs("#status").textContent = contract?.status || "—";
+  UI.qs("#sent").textContent = contract?.sentAt || "—";
+  UI.qs("#signed").textContent = contract?.signedAt || "—";
+
+  UI.qs("#btnReview").onclick = () => {
+    const r = ORDIN.completeTask({ engagementId: eng.id, taskDefCode:"CONTRACTOR_REVIEW_CONTRACT", actorUserId: s.userId });
+    if (r.ok) { UI.toast("Marked reviewed"); location.reload(); }
+    else UI.toast(r.error || "Review task locked");
+  };
+
+  UI.qs("#btnSign").onclick = () => {
+    // complete sign task first (requires review)
+    const t = ORDIN.completeTask({ engagementId: eng.id, taskDefCode:"CONTRACTOR_SIGN_CONTRACT", actorUserId: s.userId });
+    if (!t.ok) return UI.toast(t.error || "Sign task locked");
+
+    const r = ORDIN.signContract({ engagementId: eng.id, actorUserId: s.userId });
+    if (r.ok) { UI.toast("Signed"); location.reload(); }
+    else UI.toast(r.error || "Sign failed");
+  };
+
+  UI.qs("#btnLogout").onclick = () => { ORDIN.logout(); UI.redirect("../index.html"); };
+</script>
+</body>
+</html>

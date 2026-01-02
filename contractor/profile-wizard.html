@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile wizard — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+  <style>
+    .wizard-grid{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+    @media (max-width: 980px){.wizard-grid{grid-template-columns:1fr}}
+    .form-card{border:1px solid var(--line);border-radius:14px;background:#fff;padding:16px}
+    .stepper{border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px}
+    .steps{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+    .step{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:12px}
+    .step.active{border-color:rgba(11,18,32,.25);box-shadow:0 6px 20px rgba(15,23,42,.06)}
+    .step.done{border-color:rgba(22,163,74,.35)}
+    .num{width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;border:2px solid var(--line);color:var(--muted)}
+    .step.active .num{border-color:var(--btn);color:var(--btn)}
+    .step.done .num{border-color:var(--good);background:rgba(22,163,74,.12);color:var(--good)}
+    .title{font-weight:800}
+    .desc{color:var(--muted);font-size:13px;margin-top:3px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width: 860px){.grid-2{grid-template-columns:1fr}}
+    .actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}
+    .req{color:var(--bad);font-weight:700}
+    .err{color:var(--bad);font-size:13px;margin-top:6px;display:none}
+    .hint{border:1px dashed rgba(11,18,32,.25);border-radius:14px;padding:12px;background:rgba(11,18,32,.02);margin-top:12px}
+    .muted-sm{color:var(--muted);font-size:13px}
+    .ring{
+      width:140px;height:140px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      background: conic-gradient(var(--btn) 0deg, var(--line) 0deg);
+      margin: 10px auto 0;
+    }
+    .ring .inner{
+      width:112px;height:112px;border-radius:999px;background:var(--card);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:22px;color:var(--ink);
+      border:1px solid var(--line);
+    }
+    .chk{display:flex;gap:10px;align-items:flex-start;margin-top:12px}
+    .chk input{margin-top:3px}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="dashboard.html">Back to dashboard</a>
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-bottom:24px;">
+  <div class="wizard-grid">
+
+    <!-- LEFT: FORM -->
+    <section class="form-card">
+      <h1>Complete your contractor profile</h1>
+      <p class="muted">A simple UK-first onboarding flow. Tasks unlock readiness.</p>
+
+      <!-- STEP 1 -->
+      <div id="step1">
+        <h2 style="margin:16px 0 8px;">1) Personal details</h2>
+
+        <div class="grid-2">
+          <div>
+            <div class="label">First name <span class="req">*</span></div>
+            <input id="first" class="input" />
+            <div class="err" id="err_first">First name is required.</div>
+          </div>
+          <div>
+            <div class="label">Last name <span class="req">*</span></div>
+            <input id="last" class="input" />
+            <div class="err" id="err_last">Last name is required.</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <div class="label">Email <span class="req">*</span></div>
+            <input id="email" class="input" />
+            <div class="err" id="err_email">Valid email is required.</div>
+          </div>
+          <div>
+            <div class="label">Phone (optional)</div>
+            <input id="phone" class="input" placeholder="+44…" />
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div id="step2" style="display:none;">
+        <h2 style="margin:16px 0 8px;">2) UK address & contractor type</h2>
+
+        <div class="label">Contractor type <span class="req">*</span></div>
+        <select id="type" class="input">
+          <option value="LTD">Limited company</option>
+          <option value="SOLE_TRADER">Sole trader</option>
+          <option value="UMBRELLA">Umbrella</option>
+        </select>
+
+        <div style="margin-top:12px;">
+          <div class="label">Address line 1 <span class="req">*</span></div>
+          <input id="a1" class="input" />
+        </div>
+
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <div class="label">City <span class="req">*</span></div>
+            <input id="city" class="input" />
+          </div>
+          <div>
+            <div class="label">Postcode <span class="req">*</span></div>
+            <input id="pc" class="input" />
+          </div>
+        </div>
+
+        <div class="err" id="err_addr">Address line 1, city and postcode are required.</div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div id="step3" style="display:none;">
+        <h2 style="margin:16px 0 8px;">3) Terms & readiness</h2>
+
+        <div class="hint">
+          <strong>ORDIN Contractor Terms (v1)</strong>
+          <div class="muted-sm" style="margin-top:6px;">
+            This is a lightweight demo acknowledgement. In v1.1+ you’ll see full contract documents and e-sign.
+          </div>
+        </div>
+
+        <div class="chk">
+          <input type="checkbox" id="agree" />
+          <label for="agree" class="muted">
+            I agree to ORDIN’s contractor onboarding terms and confirm the details provided are accurate.
+          </label>
+        </div>
+        <div class="err" id="err_agree">Please tick the box to continue.</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="btnBack">Back</button>
+        <button class="btn primary" id="btnNext">Continue</button>
+      </div>
+
+      <p id="msg" class="muted" style="margin-top:10px;"></p>
+    </section>
+
+    <!-- RIGHT: STEPPER + PROGRESS -->
+    <aside>
+      <div class="stepper">
+        <h3>Onboarding</h3>
+        <ul class="steps">
+          <li class="step active" id="st1">
+            <div class="num">1</div>
+            <div>
+              <div class="title">Personal details</div>
+              <div class="desc">Identity basics</div>
+            </div>
+          </li>
+          <li class="step" id="st2">
+            <div class="num">2</div>
+            <div>
+              <div class="title">Address & type</div>
+              <div class="desc">UK address + contractor type</div>
+            </div>
+          </li>
+          <li class="step" id="st3">
+            <div class="num">3</div>
+            <div>
+              <div class="title">Terms</div>
+              <div class="desc">Confirm and finish</div>
+            </div>
+          </li>
+        </ul>
+
+        <div class="ring" id="ring">
+          <div class="inner"><span id="pct">0%</span></div>
+        </div>
+        <div class="muted-sm" id="progressText" style="text-align:center;margin-top:8px;">0 of 3 steps completed</div>
+      </div>
+
+      <div class="hint">
+        <strong>What gets unlocked?</strong>
+        <div class="muted-sm" style="margin-top:6px;">
+          When your profile is complete, ORDIN marks you as <strong>READY</strong> for onboarding and contracts (v1).
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<script src="../js/app.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/contractor_wizard.js"></script>
+</body>
+</html>

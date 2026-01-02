@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Documents — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="tasks.html">Back</a>
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a href="dashboard.html">Task hub</a>
+    <a href="tasks.html">Tasks</a>
+    <a href="contract.html">Contract</a>
+    <a class="active" href="documents.html">Documents</a>
+    <a href="profile.html">Profile</a>
+  </aside>
+
+  <section class="card">
+    <h1 class="m0">Documents</h1>
+    <p class="muted">Upload required documents (demo). Stored with timestamps.</p>
+
+    <div class="grid-2">
+      <div>
+        <div class="label">Document type</div>
+        <select id="type" class="input">
+          <option value="OTHER">Other</option>
+          <option value="ID">ID</option>
+          <option value="ADDRESS_PROOF">Proof of address</option>
+          <option value="INSURANCE">Insurance</option>
+          <option value="COMPANY_DOC">Company document</option>
+        </select>
+      </div>
+      <div>
+        <div class="label">Document name</div>
+        <input id="name" class="input" placeholder="passport.pdf" />
+      </div>
+    </div>
+
+    <div class="row gap-10 wrap" style="margin-top:14px;">
+      <button id="btnAdd" class="btn primary">Add document</button>
+      <button id="btnComplete" class="btn">Mark docs task complete</button>
+    </div>
+
+    <div class="hr"></div>
+
+    <table class="table">
+      <thead><tr><th>Type</th><th>Name</th><th>Uploaded</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["CONTRACTOR"], "../auth/login.html");
+  if (!s) return;
+
+  const ctx = ORDIN.getMyContext();
+  const db = ctx.db, eng = ctx.engagement;
+
+  const type = UI.qs("#type");
+  const name = UI.qs("#name");
+  const tbody = UI.qs("#rows");
+
+  function render(){
+    const docs = db.documents.filter(d=>d.engagementId===eng.id);
+    tbody.innerHTML = docs.length
+      ? docs.map(d=>`<tr><td>${UI.esc(d.type)}</td><td>${UI.esc(d.name)}</td><td>${UI.esc(d.createdAt)}</td></tr>`).join("")
+      : `<tr><td colspan="3" class="muted">No documents yet.</td></tr>`;
+  }
+  render();
+
+  UI.qs("#btnAdd").onclick = () => {
+    if (!name.value.trim()) return UI.toast("Enter a document name");
+    ORDIN.addDocument({ engagementId: eng.id, type: type.value, name: name.value.trim() });
+    name.value = "";
+    render();
+    UI.toast("Document added");
+  };
+
+  UI.qs("#btnComplete").onclick = () => {
+    const r = ORDIN.completeTask({ engagementId: eng.id, taskDefCode:"CONTRACTOR_UPLOAD_DOCS", actorUserId: s.userId });
+    if (r.ok) { UI.toast("Docs task completed"); UI.redirect("tasks.html"); }
+    else UI.toast(r.error || "Cannot complete yet");
+  };
+
+  UI.qs("#btnLogout").onclick = () => { ORDIN.logout(); UI.redirect("../index.html"); };
+</script>
+</body>
+</html>

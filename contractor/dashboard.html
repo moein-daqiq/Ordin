@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contractor dashboard — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+  <style>
+    .dash-grid{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start}
+    @media (max-width: 980px){.dash-grid{grid-template-columns:1fr}}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+    @media (max-width: 820px){.kpis{grid-template-columns:1fr}}
+    .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+    .kpi .t{color:var(--muted);font-size:13px}
+    .kpi .v{font-size:26px;font-weight:800;margin-top:4px}
+    .onb-wrap{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px}
+    .onb-top{display:flex;gap:14px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+    .onb-title{display:flex;gap:10px;align-items:center}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;color:var(--muted)}
+    .onb-main{display:grid;grid-template-columns:1fr 260px;gap:12px;margin-top:12px}
+    @media (max-width: 900px){.onb-main{grid-template-columns:1fr}}
+    .onb-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+    .task-list{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+    .task{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+    .task .left{display:flex;gap:10px;align-items:flex-start}
+    .dot{width:18px;height:18px;border-radius:999px;border:2px solid var(--line);display:inline-block;margin-top:2px}
+    .dot.done{background:var(--good);border-color:var(--good)}
+    .task h3{margin:0;font-size:14px}
+    .muted-sm{color:var(--muted);font-size:13px}
+    .task .desc{margin-top:3px}
+    .task .right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .btn.small{padding:8px 10px;border-radius:10px;font-size:13px}
+    .progress-card{display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;min-height:180px}
+    .ring{
+      width:140px;height:140px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      background: conic-gradient(var(--btn) 0deg, var(--line) 0deg);
+    }
+    .ring .inner{
+      width:112px;height:112px;border-radius:999px;background:var(--card);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:22px;color:var(--ink);
+      border:1px solid var(--line);
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-bottom:24px;">
+  <div class="dash-grid">
+
+    <!-- LEFT NAV -->
+    <aside class="card sidebar">
+      <a class="active" href="dashboard.html">Overview</a>
+      <a href="profile-wizard.html">Profile wizard</a>
+      <a href="settings.html" style="opacity:.85;">Settings (soon)</a>
+    </aside>
+
+    <!-- MAIN -->
+    <section>
+      <div class="card">
+        <div class="row between center wrap">
+          <div>
+            <h1 class="m0">Contractor dashboard</h1>
+            <div class="muted" id="who">—</div>
+          </div>
+          <div id="readinessBadge"></div>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="t">Status</div>
+            <div class="v" id="statusText">—</div>
+          </div>
+          <div class="kpi">
+            <div class="t">Organisation</div>
+            <div class="v" style="font-size:18px;font-weight:800;" id="orgText">—</div>
+          </div>
+          <div class="kpi">
+            <div class="t">Payments</div>
+            <div class="v" style="font-size:18px;font-weight:800;">Coming soon</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ONBOARDING HUB -->
+      <div class="onb-wrap">
+        <div class="onb-top">
+          <div class="onb-title">
+            <strong>Complete onboarding to unlock readiness</strong>
+            <span class="pill">UK contractors</span>
+          </div>
+          <button class="btn primary" id="btnStart">Continue setup</button>
+        </div>
+
+        <div class="onb-main">
+          <!-- tasks -->
+          <div class="onb-card">
+            <div class="muted-sm">Tasks unlock capabilities. v1 keeps onboarding lightweight.</div>
+            <div class="task-list" id="taskList"></div>
+          </div>
+
+          <!-- progress -->
+          <div class="onb-card progress-card">
+            <div class="muted-sm">Onboarding progress</div>
+            <div class="ring" id="ring">
+              <div class="inner"><span id="pct">0%</span></div>
+            </div>
+            <div class="muted-sm"><span id="doneCount">0</span> of <span id="totalCount">0</span> tasks completed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="card" style="margin-top:12px;">
+        <h2 class="m0">What’s next</h2>
+        <p class="muted" style="margin-top:6px;">
+          KYC, bank details, and payments are planned for v1.1+. For now, ORDIN focuses on onboarding, contracts, and readiness.
+        </p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="../js/app.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/contractor.js"></script>
+</body>
+</html>

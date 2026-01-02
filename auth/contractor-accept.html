@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Accept invite — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="login.html">Login</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card" style="max-width:720px;margin:18px auto;">
+    <h1>Accept your ORDIN invitation</h1>
+    <p class="muted" id="subText">
+      This page is accessed from your employer’s invite link.
+    </p>
+
+    <!-- NO TOKEN INPUT (token comes from URL) -->
+    <div class="note" id="noTokenBox" style="display:none;margin-top:12px;">
+      <strong>No invite link detected.</strong><br/>
+      If you already have an ORDIN account, please login.<br/>
+      If you don’t have an account yet, ask your employer to send you an invite link.
+      <div class="row gap-10 wrap" style="margin-top:12px;">
+        <a class="btn primary" href="login.html">Login</a>
+        <a class="btn" href="../role.html">Back</a>
+      </div>
+    </div>
+
+    <div id="formBox">
+      <div class="hr"></div>
+
+      <h2>Contractor details</h2>
+
+      <div class="grid-2">
+        <div>
+          <div class="label">First name</div>
+          <input id="first" class="input" placeholder="John" />
+        </div>
+        <div>
+          <div class="label">Last name</div>
+          <input id="last" class="input" placeholder="Smith" />
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="label">Email</div>
+          <input id="email" class="input" placeholder="john@email.com" />
+        </div>
+        <div>
+          <div class="label">Password</div>
+          <input id="pass" class="input" type="password" placeholder="Create a password" />
+        </div>
+      </div>
+
+      <div class="label">Contractor type</div>
+      <select id="type" class="input">
+        <option value="LTD">Limited company</option>
+        <option value="SOLE_TRADER">Sole trader</option>
+        <option value="UMBRELLA">Umbrella</option>
+      </select>
+
+      <div class="row gap-10 wrap" style="margin-top:14px;">
+        <button id="btnAccept" class="btn primary">Accept invite & continue</button>
+        <a class="btn" href="../role.html">Back</a>
+      </div>
+
+      <p id="err" class="muted" style="color:var(--bad);margin-top:12px;"></p>
+
+      <div class="note" style="margin-top:14px;">
+        <strong>Tip:</strong> If you don’t have an invite link, ask your employer to invite you from Employer Dashboard.
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="../js/app.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const token = params.get("token"); // token comes only from URL
+
+  const noTokenBox = UI.qs("#noTokenBox");
+  const formBox = UI.qs("#formBox");
+  const err = UI.qs("#err");
+
+  // If no token in URL: hide form, show login guidance
+  if (!token) {
+    formBox.style.display = "none";
+    noTokenBox.style.display = "block";
+  }
+
+  const type = UI.qs("#type");
+  const first = UI.qs("#first");
+  const last = UI.qs("#last");
+  const email = UI.qs("#email");
+  const pass = UI.qs("#pass");
+
+  UI.qs("#btnAccept").onclick = () => {
+    err.textContent = "";
+    const r = ORDIN.contractorAccept({
+      token: token, // uses URL token
+      contractorType: type.value,
+      firstName: first.value.trim(),
+      lastName: last.value.trim(),
+      email: email.value.trim(),
+      pass: pass.value
+    });
+    if (!r.ok) { err.textContent = r.error; return; }
+    UI.redirect("../contractor/dashboard.html");
+  };
+</script>
+</body>
+</html>

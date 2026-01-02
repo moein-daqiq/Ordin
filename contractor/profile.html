@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a href="dashboard.html">Task hub</a>
+    <a href="tasks.html">Tasks</a>
+    <a href="contract.html">Contract</a>
+    <a href="documents.html">Documents</a>
+    <a class="active" href="profile.html">Profile</a>
+  </aside>
+
+  <section class="card">
+    <h1 class="m0">Profile</h1>
+    <p class="muted">v1 limits what can be changed (type/employer link are locked).</p>
+
+    <div class="hr"></div>
+
+    <div class="grid-2">
+      <div>
+        <div class="label">First name</div>
+        <input id="first" class="input" />
+      </div>
+      <div>
+        <div class="label">Last name</div>
+        <input id="last" class="input" />
+      </div>
+    </div>
+
+    <div class="label">Contractor type (locked)</div>
+    <input id="type" class="input" disabled />
+
+    <div class="hr"></div>
+
+    <h2>UK address</h2>
+    <div class="label">Address line 1</div>
+    <input id="a1" class="input" />
+    <div class="grid-2">
+      <div>
+        <div class="label">City</div>
+        <input id="city" class="input" />
+      </div>
+      <div>
+        <div class="label">Postcode</div>
+        <input id="pc" class="input" />
+      </div>
+    </div>
+
+    <div class="row gap-10 wrap" style="margin-top:14px;">
+      <button id="btnSave" class="btn primary">Save</button>
+      <button id="btnComplete" class="btn">Mark profile tasks complete</button>
+    </div>
+  </section>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["CONTRACTOR"], "../auth/login.html");
+  if (!s) return;
+
+  const ctx = ORDIN.getMyContext();
+  const db = ctx.db, ctr = ctx.contractor, eng = ctx.engagement;
+
+  const first = UI.qs("#first");
+  const last = UI.qs("#last");
+  const type = UI.qs("#type");
+  const a1 = UI.qs("#a1");
+  const city = UI.qs("#city");
+  const pc = UI.qs("#pc");
+
+  function fill(){
+    first.value = ctr.first_name || "";
+    last.value = ctr.last_name || "";
+    type.value = ctr.contractor_type || "";
+    a1.value = ctr.address_line1 || "";
+    city.value = ctr.city || "";
+    pc.value = ctr.postcode || "";
+  }
+  fill();
+
+  UI.qs("#btnSave").onclick = () => {
+    ctr.first_name = first.value.trim();
+    ctr.last_name = last.value.trim();
+    ctr.address_line1 = a1.value.trim();
+    ctr.city = city.value.trim();
+    ctr.postcode = pc.value.trim();
+    ORDIN.save(db);
+    UI.toast("Saved");
+  };
+
+  UI.qs("#btnComplete").onclick = () => {
+    // Complete first three profile tasks in order if available
+    const codes = ["CONTRACTOR_PERSONAL_DETAILS","CONTRACTOR_TYPE_CONFIRM","CONTRACTOR_UK_ADDRESS"];
+    for (const code of codes) {
+      ORDIN.completeTask({ engagementId: eng.id, taskDefCode: code, actorUserId: s.userId });
+    }
+    UI.toast("Profile tasks updated");
+    UI.redirect("tasks.html");
+  };
+
+  UI.qs("#btnLogout").onclick = () => { ORDIN.logout(); UI.redirect("../index.html"); };
+</script>
+</body>
+</html>

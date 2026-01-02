@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tasks — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="dashboard.html">Back</a>
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a href="dashboard.html">Task hub</a>
+    <a class="active" href="tasks.html">Tasks</a>
+    <a href="contract.html">Contract</a>
+    <a href="documents.html">Documents</a>
+    <a href="profile.html">Profile</a>
+  </aside>
+
+  <section class="card">
+    <h1 class="m0">Tasks</h1>
+    <p class="muted">Tasks unlock capabilities. Complete in order.</p>
+
+    <div id="rows"></div>
+
+    <div class="note" style="margin-top:14px;">
+      <strong>Demo note:</strong> Some tasks are “button-complete” to show unlock flow.
+      Documents and Contract tasks connect to their pages.
+    </div>
+  </section>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["CONTRACTOR"], "../auth/login.html");
+  if (!s) return;
+
+  const ctx = ORDIN.getMyContext();
+  const db = ctx.db, eng = ctx.engagement;
+
+  function render(){
+    const tasks = db.tasks.filter(t=>t.engagementId===eng.id)
+      .map(t=>({ t, def: db.taskDefs.find(d=>d.id===t.taskDefId) }))
+      .sort((a,b)=>(a.def?.order||0)-(b.def?.order||0));
+
+    const box = UI.qs("#rows");
+    box.innerHTML = "";
+
+    tasks.forEach(x=>{
+      const title = x.def?.title || "Task";
+      const status = x.t.status;
+      let action = "";
+
+      // Special routing tasks
+      if (x.def.code === "CONTRACTOR_UPLOAD_DOCS") {
+        action = `<a class="btn ${status==="AVAILABLE"?"primary":""}" href="documents.html">${status==="AVAILABLE"?"Upload":"Locked"}</a>`;
+      } else if (x.def.code === "CONTRACTOR_REVIEW_CONTRACT" || x.def.code === "CONTRACTOR_SIGN_CONTRACT") {
+        action = `<a class="btn ${status==="AVAILABLE"?"primary":""}" href="contract.html">${status==="AVAILABLE"?"Open":"Locked"}</a>`;
+      } else {
+        action = `<button class="btn ${status==="AVAILABLE"?"primary":""}" ${status!=="AVAILABLE"?"disabled":""} data-code="${x.def.code}">
+          ${status==="COMPLETED"?"Completed":(status==="AVAILABLE"?"Complete task":"Locked")}
+        </button>`;
+      }
+
+      box.insertAdjacentHTML("beforeend", `
+        <div class="feature" style="margin:10px 0;">
+          <div class="row between center wrap gap-10">
+            <div>
+              <div class="feature-title">${UI.esc(title)}</div>
+              <div class="muted">${UI.esc(status)}</div>
+            </div>
+            <div class="row gap-10 wrap">${action}</div>
+          </div>
+        </div>
+      `);
+    });
+
+    UI.qsa("[data-code]").forEach(btn=>{
+      btn.onclick = () => {
+        const code = btn.getAttribute("data-code");
+        const r = ORDIN.completeTask({ engagementId: eng.id, taskDefCode: code, actorUserId: s.userId });
+        if (r.ok) { UI.toast("Task completed"); location.reload(); }
+        else UI.toast(r.error || "Failed");
+      };
+    });
+  }
+
+  render();
+  UI.qs("#btnLogout").onclick = () => { ORDIN.logout(); UI.redirect("../index.html"); };
+</script>
+</body>
+</html>

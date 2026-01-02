@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Create employer account — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="login.html">Login</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card" style="max-width:650px;margin:18px auto;">
+    <h1>Create your employer account</h1>
+    <p class="muted">v1 creates your organisation and employer admin user.</p>
+
+    <div class="grid-2">
+      <div>
+        <div class="label">Company name</div>
+        <input id="company" class="input" placeholder="Example Ltd" />
+      </div>
+      <div>
+        <div class="label">Primary contact name</div>
+        <input id="name" class="input" placeholder="Jane Smith" />
+      </div>
+    </div>
+
+    <div class="label">Email</div>
+    <input id="email" class="input" placeholder="jane@example.co.uk" />
+
+    <div class="label">Password</div>
+    <input id="pass" class="input" type="password" placeholder="Create a password" />
+
+    <div class="row gap-10 wrap" style="margin-top:14px;">
+      <button id="btnCreate" class="btn primary">Create account</button>
+      <a class="btn" href="../role.html">Back</a>
+    </div>
+
+    <p id="err" class="muted" style="color:var(--bad);margin-top:12px;"></p>
+  </section>
+</main>
+
+<script src="../js/app.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const company = UI.qs("#company");
+  const name = UI.qs("#name");
+  const email = UI.qs("#email");
+  const pass = UI.qs("#pass");
+  const err = UI.qs("#err");
+
+  UI.qs("#btnCreate").onclick = () => {
+    err.textContent = "";
+    const r = ORDIN.employerSignup({
+      companyName: company.value.trim(),
+      email: email.value.trim(),
+      pass: pass.value,
+      contactName: name.value.trim()
+    });
+    if (!r.ok) { err.textContent = r.error; return; }
+    UI.redirect("../employer/dashboard.html");
+  };
+</script>
+</body>
+</html>

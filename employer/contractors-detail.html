@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contractor detail — ORDIN</title>
+  <link rel="stylesheet" href="../css/site.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container row between center">
+    <a class="brand row center gap-10" href="../index.html">
+      <img src="../assets/logo.svg" alt="ORDIN" class="logo" />
+      <span class="brand-name">ORDIN</span>
+    </a>
+    <nav class="nav row center gap-14">
+      <a class="navlink" href="contractors.html">Back to contractors</a>
+      <a class="navlink" href="#" id="btnLogout">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container sidebar-layout">
+  <aside class="card sidebar">
+    <a href="dashboard.html">Overview</a>
+    <a class="active" href="contractors.html">Contractors</a>
+    <a href="contracts.html">Contracts</a>
+    <a href="settings.html">Organisation settings</a>
+  </aside>
+
+  <section>
+    <div class="card">
+      <div class="row between center wrap gap-10">
+        <div>
+          <h1 class="m0" id="title">Contractor</h1>
+          <p class="muted m0" id="subtitle"></p>
+        </div>
+        <div id="badge"></div>
+      </div>
+    </div>
+
+    <!-- TABS (simple) -->
+    <div class="card">
+      <div class="row gap-10 wrap" style="margin-bottom:10px;">
+        <button class="btn" data-tab="overview">Overview</button>
+        <button class="btn" data-tab="contract">Contract</button>
+        <button class="btn" data-tab="compliance">Compliance</button>
+        <button class="btn" data-tab="documents">Documents</button>
+      </div>
+
+      <div id="tab-overview"></div>
+      <div id="tab-contract" style="display:none"></div>
+      <div id="tab-compliance" style="display:none"></div>
+      <div id="tab-documents" style="display:none"></div>
+    </div>
+  </section>
+</main>
+
+<script src="../js/data.js"></script>
+<script src="../js/ui.js"></script>
+<script>
+  const s = UI.requireAuth(["EMPLOYER"], "../auth/login.html");
+  if (!s) return;
+
+  const params = new URLSearchParams(location.search);
+  const engId = params.get("eng");
+
+  const ctx = ORDIN.getMyContext();
+  const db = ctx.db;
+  const eng = db.engagements.find(e=>e.id===engId);
+  if (!eng) { UI.redirect("contractors.html"); }
+
+  const ctr = db.contractors.find(c=>c.id===eng.contractorId);
+  const org = db.orgs.find(o=>o.id===eng.organisationId);
+  const contract = db.contracts.find(c=>c.engagementId===eng.id);
+  const tasks = db.tasks.filter(t=>t.engagementId===eng.id);
+  const docs = db.documents.filter(d=>d.engagementId===eng.id);
+
+  UI.qs("#title").textContent = ctr ? `${ctr.first_name} ${ctr.last_name}` : "Contractor";
+  UI.qs("#subtitle").textContent = `${org?.name || ""} • ${ctr?.contractor_type || "—"}`;
+  UI.qs("#badge").innerHTML = UI.badge(eng.readiness);
+
+  // OVERVIEW TAB
+  const done = tasks.filter(t=>t.status==="COMPLETED").length;
+  const total = tasks.length || 1;
+  UI.qs("#tab-overview").innerHTML = `
+    <h2>Overview</h2>
+    <p class="muted">Onboarding progress: <strong>${done}/${total}</strong> tasks completed.</p>
+    <div class="hr"></div>
+    <h2>Outstanding tasks</h2>
+    <ul class="list">
+      ${tasks.filter(t=>t.status!=="COMPLETED").slice(0,8).map(t=>{
+        const def = db.taskDefs.find(d=>d.id===t.taskDefId);
+        return `<li>${UI.esc(def?.title || t.taskDefId)} <span class="muted">(${t.status})</span></li>`;
+      }).join("") || `<li class="muted">No outstanding tasks.</li>`}
+    </ul>
+  `;
+
+  // CONTRACT TAB
+  UI.qs("#tab-contract").innerHTML = `
+    <h2>Contract</h2>
+    <div class="kv">
+      <div class="muted">Status</div><div><strong>${UI.esc(contract?.status || "—")}</strong></div>
+      <div class="muted">Sent</div><div>${contract?.sentAt ? UI.esc(contract.sentAt) : "—"}</div>
+      <div class="muted">Signed</div><div>${contract?.signedAt ? UI.esc(contract.signedAt) : "—"}</div>
+    </div>
+    <div class="row gap-10 wrap" style="margin-top:12px;">
+      <button class="btn primary" id="btnSend">Send contract</button>
+      <a class="btn" href="contracts.html">View all contracts</a>
+    </div>
+    <p class="muted" style="margin-top:10px;">
+      v1 uses templates only — no contract editing.
+    </p>
+  `;
+
+  // COMPLIANCE TAB (read-only)
+  UI.qs("#tab-compliance").innerHTML = `
+    <h2>Compliance</h2>
+    <p class="muted">v1 compliance is task + declaration readiness (IR35 readiness is future).</p>
+    <div class="hr"></div>
+    <div class="kv">
+      <div class="muted">Contractor structure</div><div>${UI.esc(ctr?.contractor_type || "—")}</div>
+      <div class="muted">Audit</div><div>Enabled (events logged)</div>
+      <div class="muted">IR35</div><div class="muted">Coming soon (v1.1)</div>
+    </div>
+  `;
+
+  // DOCUMENTS TAB
+  UI.qs("#tab-documents").innerHTML = `
+    <h2>Documents</h2>
+    <p class="muted">Read-only audit-ready storage (demo).</p>
+    <table class="table">
+      <thead><tr><th>Type</th><th>Name</th><th>Uploaded</th></tr></thead>
+      <tbody>
+        ${docs.map(d=>`<tr><td>${UI.esc(d.type)}</td><td>${UI.esc(d.name)}</td><td>${UI.esc(d.createdAt)}</td></tr>`).join("") ||
+          `<tr><td colspan="3" class="muted">No documents uploaded yet.</td></tr>`}
+      </tbody>
+    </table>
+  `;
+
+  // Send contract (demo)
+  setTimeout(() => {
+    const btn = UI.qs("#btnSend");
+    if (btn) btn.onclick = () => {
+      const r = ORDIN.sendContract({ engagementId: eng.id });
+      if (r.ok) { UI.toast("Contract sent"); location.reload(); }
+      else UI.toast(r.error || "Failed");
+    };
+  }, 0);
+
+  // Tabs
+  function showTab(key){
+    ["overview","contract","compliance","documents"].forEach(k=>{
+      UI.qs("#tab-"+k).style.display = (k===key) ? "block" : "none";
+    });
+  }
+  UI.qsa("[data-tab]").forEach(b=>{
+    b.onclick = () => showTab(b.getAttribute("data-tab"));
+  });
+
+  UI.qs("#btnLogout").onclick = () => { ORDIN.logout(); UI.redirect("../index.html"); };
+</script>
+</body>
+</html>
