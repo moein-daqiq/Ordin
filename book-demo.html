@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ORDIN — Book a free demo</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <style>
+    /* =========================
+       BOOK DEMO PAGE (Standalone)
+       - Looks like Deel modal, but as a full page
+       - Does NOT break your homepage layout
+    ========================= */
+
+    body{
+      /* keep your site background, but slightly calmer here */
+      background:
+        radial-gradient(1100px 650px at 20% 0%, rgba(24,179,122,.18), transparent 60%),
+        radial-gradient(900px 550px at 85% 10%, rgba(255,255,255,.06), transparent 55%),
+        linear-gradient(180deg, rgba(7,26,20,.55), rgba(6,17,12,.95));
+    }
+
+    .demoWrap{
+      padding:40px 0 70px;
+    }
+
+    .demoStage{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:26px;
+      align-items:center;
+    }
+
+    /* Left side (background preview feel) */
+    .demoPreview{
+      min-height:520px;
+      border-radius:26px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(600px 360px at 30% 25%, rgba(24,179,122,.15), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      position:relative;
+      overflow:hidden;
+      padding:22px;
+    }
+
+    .demoPreview__badge{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color:rgba(234,242,238,.92);
+      font-weight:900;
+    }
+
+    .demoPreview__title{
+      margin:18px 0 8px;
+      font-size:46px;
+      line-height:1.02;
+      letter-spacing:-.8px;
+    }
+    .demoPreview__sub{
+      margin:0;
+      max-width:520px;
+      color:rgba(175,193,183,.92);
+      line-height:1.65;
+      font-weight:650;
+    }
+
+    /* Right side (white card) */
+    .demoCard{
+      background:#ffffff;
+      color:#0B1220;
+      border-radius:18px;
+      border:1px solid rgba(11,18,32,.10);
+      box-shadow: 0 22px 70px rgba(0,0,0,.35);
+      padding:18px;
+      position:relative;
+    }
+
+    .demoCard__close{
+      position:absolute;
+      right:12px;
+      top:12px;
+      width:36px;
+      height:36px;
+      border-radius:999px;
+      border:1px solid rgba(11,18,32,.12);
+      background:#fff;
+      cursor:pointer;
+      font-weight:900;
+      color:rgba(11,18,32,.70);
+    }
+    .demoCard__close:hover{background:rgba(11,18,32,.04)}
+
+    .demoCard__head{
+      text-align:center;
+      padding:6px 6px 12px;
+    }
+    .demoCard__head h1{
+      margin:8px 0 6px;
+      font-size:28px;
+      letter-spacing:-.4px;
+      line-height:1.15;
+    }
+    .demoCard__head p{
+      margin:0;
+      color:rgba(11,18,32,.66);
+      line-height:1.55;
+      font-weight:650;
+    }
+
+    .demoStars{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+      color:rgba(11,18,32,.70);
+      font-weight:800;
+      font-size:13px;
+    }
+    .demoStars .stars{
+      color:#E3513D;
+      letter-spacing:1px;
+      font-size:14px;
+    }
+
+    .demoForm{
+      padding:10px 6px 6px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .row2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .field label{
+      display:block;
+      font-size:12px;
+      font-weight:900;
+      color:rgba(11,18,32,.70);
+      margin:0 0 6px;
+    }
+
+    .input, .select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid rgba(11,18,32,.16);
+      outline:none;
+      font-weight:700;
+      color:#0B1220;
+      background:#fff;
+    }
+    .input:focus, .select:focus{
+      border-color: rgba(15,138,95,.55);
+      box-shadow: 0 0 0 3px rgba(24,179,122,.15);
+    }
+
+    .hint{
+      margin-top:6px;
+      font-size:12px;
+      color:rgba(11,18,32,.58);
+      line-height:1.45;
+      text-align:center;
+    }
+
+    .divider{
+      height:1px;
+      background:rgba(11,18,32,.10);
+      margin:4px 0 2px;
+    }
+
+    .slotBox{
+      border:1px solid rgba(11,18,32,.10);
+      border-radius:14px;
+      background:rgba(11,18,32,.03);
+      padding:12px;
+    }
+
+    .slotBox__title{
+      font-weight:900;
+      color:rgba(11,18,32,.80);
+      margin-bottom:10px;
+      font-size:13px;
+    }
+
+    .slots{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .slotBtn{
+      border:1px solid rgba(11,18,32,.14);
+      background:#fff;
+      border-radius:999px;
+      padding:9px 12px;
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+      color:rgba(11,18,32,.78);
+    }
+    .slotBtn:hover{background:rgba(11,18,32,.04)}
+    .slotBtn.is-active{
+      border-color: rgba(15,138,95,.55);
+      background: rgba(24,179,122,.12);
+      color:#0B1220;
+    }
+
+    .demoSubmit{
+      margin-top:6px;
+      border:0;
+      width:100%;
+      background:#0B0F14;
+      color:#fff;
+      padding:14px 16px;
+      border-radius:999px;
+      font-weight:950;
+      cursor:pointer;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+    }
+    .demoSubmit:hover{filter:brightness(1.03)}
+
+    .msg{
+      display:none;
+      margin-top:12px;
+      border-radius:14px;
+      border:1px solid rgba(15,138,95,.25);
+      background: rgba(24,179,122,.10);
+      color: rgba(11,18,32,.85);
+      padding:12px;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    @media (max-width: 980px){
+      .demoStage{grid-template-columns:1fr}
+      .demoPreview{min-height:260px}
+    }
+    @media (max-width: 520px){
+      .row2{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body class="theme-dark">
+
+  <!-- TOP STRIP (same as home) -->
+  <div class="topstrip">
+    <div class="container topstrip__inner">
+      <div class="topstrip__items">
+        <span>⭐ Contracts + audit trail</span>
+        <span class="dot">•</span>
+        <span>🔒 HMRC compliance-by-design</span>
+        <span class="dot">•</span>
+        <span>⚡ Faster onboarding + payroll inputs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV (same as home) -->
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="ORDIN Home">
+        <span class="brand__mark">o.</span>
+        <span class="brand__text">ordin.</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Primary">
+        <div class="nav__item">
+          <button class="nav__link" data-mega-open="offer" aria-haspopup="true" aria-expanded="false">
+            What we offer <span class="caret">▼</span>
+          </button>
+        </div>
+
+        <div class="nav__item">
+          <a class="nav__link" href="who-we-serve.html">Who we serve</a>
+        </div>
+
+        <div class="nav__item">
+          <a class="nav__link" href="pricing.html">Pricing</a>
+        </div>
+
+        <div class="nav__item">
+          <button class="nav__link" data-mega-open="resources" aria-haspopup="true" aria-expanded="false">
+            Resources <span class="caret">▼</span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="nav__actions">
+        <a class="btn btn-ghost" href="auth/login.html">Log in</a>
+        <a class="btn btn-primary" href="book-demo.html">Book a demo</a>
+      </div>
+    </div>
+
+    <!-- MEGA MENU placeholders (so site.js won’t break) -->
+    <div class="mega" id="mega-offer" role="dialog" aria-label="What we offer">
+      <div class="container mega__panel">
+        <div class="mega__left" role="tablist" aria-label="Offer categories">
+          <button class="mega__tab is-active" data-offer-tab="payroll" role="tab" aria-selected="true">
+            <span class="ico">🏦</span> Payroll
+          </button>
+          <button class="mega__tab" data-offer-tab="hr" role="tab" aria-selected="false">
+            <span class="ico">🧑‍💼</span> HR
+          </button>
+          <button class="mega__tab" data-offer-tab="it" role="tab" aria-selected="false">
+            <span class="ico">💻</span> IT
+          </button>
+          <button class="mega__tab" data-offer-tab="services" role="tab" aria-selected="false">
+            <span class="ico">🧩</span> Services
+          </button>
+          <button class="mega__tab" data-offer-tab="platform" role="tab" aria-selected="false">
+            <span class="ico">🗂️</span> Platform
+          </button>
+
+          <a class="btn btn-soft mega__cta" href="what-we-offer.html">
+            See all products
+          </a>
+        </div>
+
+        <div class="mega__right">
+          <div class="mega__content is-active" data-offer-panel="payroll" role="tabpanel">
+            <h3>Payroll</h3>
+            <p>Payroll inputs, payslips, and reporting — built for UK operations.</p>
+          </div>
+          <div class="mega__content" data-offer-panel="hr" role="tabpanel">
+            <h3>HR (HRIS)</h3>
+            <p>Track people, documents, and policies with audit-friendly records.</p>
+          </div>
+          <div class="mega__content" data-offer-panel="it" role="tabpanel">
+            <h3>IT</h3>
+            <p>Access + device workflows. Start simple, scale later.</p>
+          </div>
+          <div class="mega__content" data-offer-panel="services" role="tabpanel">
+            <h3>Services</h3>
+            <p>Implementation, advisory, and compliance support.</p>
+          </div>
+          <div class="mega__content" data-offer-panel="platform" role="tabpanel">
+            <h3>Platform</h3>
+            <p>Contracts, audit trail, and workflow engine.</p>
+          </div>
+        </div>
+
+        <button class="mega__close" type="button" data-mega-close aria-label="Close menu">✕</button>
+      </div>
+    </div>
+
+    <div class="mega" id="mega-resources" role="dialog" aria-label="Resources">
+      <div class="container mega__panel mega__panel--simple">
+        <div class="mega__simple">
+          <a class="tile" href="resources.html#guides">
+            <div class="tile__title">Guides</div>
+            <div class="tile__desc">Simple explainers for teams.</div>
+          </a>
+          <a class="tile" href="resources.html#templates">
+            <div class="tile__title">Templates</div>
+            <div class="tile__desc">Contracts, policies, checklists.</div>
+          </a>
+          <a class="tile" href="resources.html#updates">
+            <div class="tile__title">Product updates</div>
+            <div class="tile__desc">What’s new in ORDIN.</div>
+          </a>
+        </div>
+        <button class="mega__close" type="button" data-mega-close aria-label="Close menu">✕</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DEMO CONTENT -->
+  <main class="demoWrap">
+    <div class="container">
+      <div class="demoStage">
+
+        <!-- LEFT: preview area -->
+        <section class="demoPreview" aria-label="Demo preview">
+          <div class="demoPreview__badge">🎥 Live product walkthrough</div>
+          <h2 class="demoPreview__title">Book a free demo</h2>
+          <p class="demoPreview__sub">
+            Pick a time that suits you. We’ll show you payroll + contracts + audit trail
+            and answer all your questions.
+          </p>
+        </section>
+
+        <!-- RIGHT: form card -->
+        <section class="demoCard" aria-label="Book demo form">
+          <button class="demoCard__close" type="button" id="demoClose" aria-label="Close">✕</button>
+
+          <div class="demoCard__head">
+            <h1>Book a free 30-minute product demo</h1>
+            <p>Experience a personalised demo and get your questions answered by our team.</p>
+
+            <div class="demoStars" aria-label="Rating">
+              <span class="stars">★★★★★</span>
+              <span>4.7 / 5</span>
+              <span>•</span>
+              <span>5,800+ reviews</span>
+            </div>
+          </div>
+
+          <form class="demoForm" id="demoForm">
+            <div class="row2">
+              <div class="field">
+                <label for="firstName">First name</label>
+                <input class="input" id="firstName" name="firstName" autocomplete="given-name" required />
+              </div>
+              <div class="field">
+                <label for="lastName">Last name</label>
+                <input class="input" id="lastName" name="lastName" autocomplete="family-name" required />
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="field">
+                <label for="workEmail">Work email</label>
+                <input class="input" id="workEmail" name="workEmail" type="email" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="companySize">Company size</label>
+                <select class="select" id="companySize" name="companySize" required>
+                  <option value="" selected disabled>Please select company size</option>
+                  <option>1–20</option>
+                  <option>21–200</option>
+                  <option>201–1000</option>
+                  <option>1001–2000</option>
+                  <option>2001+</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="hq">Headquarters</label>
+              <select class="select" id="hq" name="hq" required>
+                <option selected>United Kingdom</option>
+                <option>Ireland</option>
+                <option>United States</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>United Arab Emirates</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row2">
+              <div class="field">
+                <label for="demoDate">Choose a date</label>
+                <input class="input" id="demoDate" name="demoDate" type="date" required />
+              </div>
+              <div class="field">
+                <label for="timezone">Timezone</label>
+                <select class="select" id="timezone" name="timezone" required>
+                  <option value="Europe/London" selected>Europe/London</option>
+                  <option value="Europe/Dublin">Europe/Dublin</option>
+                  <option value="Europe/Paris">Europe/Paris</option>
+                  <option value="America/New_York">America/New_York</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="slotBox" aria-label="Time slots">
+              <div class="slotBox__title">Select a time</div>
+              <div class="slots" id="slots"></div>
+              <input type="hidden" id="demoTime" name="demoTime" required />
+            </div>
+
+            <div class="hint">
+              We respect your data. By submitting this form, you agree we may contact you about our services.
+            </div>
+
+            <button class="demoSubmit" type="submit">
+              📅 Choose a date &amp; time
+            </button>
+
+            <div class="msg" id="msg"></div>
+          </form>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="js/site.js"></script>
+  <script src="js/book-demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ORDIN — Pricing (Payroll)</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <style>
+    :root{--ink:#0B1220;--muted:#42526B;--line:rgba(11,18,32,.12);--bg:#F6F8FB;--card:#fff;--shadow:0 18px 40px rgba(11,18,32,.10);--green:#0F8A5F;--green2:#18B37A;--wrap:1120px;--radius:18px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    body{margin:0;background:var(--bg);color:var(--ink)} a{text-decoration:none;color:inherit}
+    .container{max-width:var(--wrap);margin:0 auto;padding:0 18px}
+    .topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.80));backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:950}
+    .brand__mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(15,138,95,.18),rgba(11,18,32,.06));border:1px solid var(--line)}
+    .links{display:flex;gap:18px;align-items:center;font-weight:800;color:rgba(11,18,32,.75)}
+    .links a:hover{color:rgba(11,18,32,.95)}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 14px;border-radius:999px;font-weight:900;border:1px solid var(--line);background:#fff}
+    .btn-primary{border-color:rgba(15,138,95,.35);background:linear-gradient(90deg,var(--green),var(--green2));color:#06110B}
+    .hero{padding:38px 0 10px}
+    .hero h1{margin:0 0 8px 0;font-size:38px;letter-spacing:-.6px}
+    .hero p{margin:0;color:var(--muted);line-height:1.6}
+    .grid{max-width:1100px;margin:22px auto 60px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+    .card{width:260px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column}
+    .card h3{margin:0 0 8px 0}
+    .price{margin:0 0 12px 0;color:var(--muted);font-weight:800}
+    ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.6;font-weight:650}
+    .cta{margin-top:auto;padding-top:14px}
+    .btn-full{width:100%}
+    @media (max-width:560px){.hero h1{font-size:30px}.card{width:100%}}
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html"><span class="brand__mark">o.</span><span>ordin.</span></a>
+      <div class="links">
+        <a href="pricing.html">Pricing</a>
+        <a href="pricing-hr.html">HR</a>
+        <a href="pricing-it.html">IT</a>
+        <a href="pricing-services.html">Services</a>
+      </div>
+      <div class="actions">
+        <a class="btn" href="auth/login.html">Log in</a>
+        <a class="btn btn-primary" href="book-demo.html">Book a demo</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="container">
+      <h1>ORDIN Payroll</h1>
+      <p>Payroll, employment models, and contractor compliance — all in one platform.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="grid">
+
+      <div class="card">
+        <h3>UK Payroll</h3>
+        <p class="price">From £29 / employee / month</p>
+        <ul>
+          <li>Payslip-ready payroll inputs</li>
+          <li>HMRC reporting & submissions</li>
+          <li>Contracts + audit trail</li>
+          <li>Onboarding checklists</li>
+        </ul>
+        <div class="cta">
+          <a class="btn btn-primary btn-full" href="book-demo.html">Get Starteded</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Contractor Management</h3>
+        <p class="price">From £19 / contractor / month</p>
+        <ul>
+          <li>Onboarding → contracts → invoices</li>
+          <li>Templates + e-sign</li>
+          <li>Invoice tracking & approvals</li>
+          <li>Compliance readiness</li>
+        </ul>
+        <div class="cta">
+          <a class="btn btn-primary btn-full" href="book-demo.html">Get Starteded</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Employer of Record (EOR)</h3>
+        <p class="price">From £599 / employee / month</p>
+        <ul>
+          <li>We employ workers on your behalf</li>
+          <li>Payroll, tax, NI handled</li>
+          <li>Local law coverage</li>
+          <li>Reduced employment risk</li>
+        </ul>
+        <div class="cta">
+          <a class="btn btn-primary btn-full" href="contact.html">Get Starteded</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Contractor of Record</h3>
+        <p class="price">From £325 / contractor / month</p>
+        <ul>
+          <li>Legal engager role</li>
+          <li>IR35 classification</li>
+          <li>Tax & NI compliance</li>
+          <li>Reduced misclassification risk</li>
+        </ul>
+        <div class="cta">
+          <a class="btn btn-primary btn-full" href="contact.html">Get Starteded</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>ORDIN PEO</h3>
+        <p class="price">From £95 / employee / month</p>
+        <ul>
+          <li>Payroll + HR support</li>
+          <li>Shared employment model</li>
+          <li>Tax & labour compliance</li>
+          <li>Onboarding assistance</li>
+        </ul>
+        <div class="cta">
+          <a class="btn btn-primary btn-full" href="contact.html">Get Starteded</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

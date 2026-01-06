@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Choose your role — ORDIN</title>
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container row between center">
+      <a class="brand row center gap-10" href="index.html">
+        <img src="assets/logo.svg" alt="ORDIN" class="logo" />
+        <span class="brand-name">ORDIN</span>
+      </a>
+      <nav class="nav row center gap-14">
+        <a class="navlink" href="auth/login.html">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>Get started</h1>
+      <p class="muted">Choose your role to continue.</p>
+
+      <div class="grid-2">
+        <a class="card selectable" href="auth/employer-signup.html">
+          <h2>I’m an employer</h2>
+          <p class="muted">Create an organisation, invite contractors, send contracts, and track readiness.</p>
+          <div class="row gap-10 wrap">
+            <span class="pill">Employer dashboard</span>
+            <span class="pill">Invite contractors</span>
+            <span class="pill">Contracts</span>
+          </div>
+        </a>
+
+        <a class="card selectable" href="auth/contractor-accept.html">
+          <h2>I’m a contractor</h2>
+          <p class="muted">Accept an invite, complete onboarding tasks, upload documents, and sign contracts.</p>
+          <div class="row gap-10 wrap">
+            <span class="pill">Task-based onboarding</span>
+            <span class="pill">Docs</span>
+            <span class="pill">Sign</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="note">
+        <strong>Reminder:</strong> ORDIN is not a marketplace. Contractors join via employer invitation in v1.
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

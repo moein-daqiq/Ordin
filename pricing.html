@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ORDIN — Pricing</title>
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+
+<body class="theme-dark">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="container topstrip__inner">
+      <div class="topstrip__items">
+        <span>🔥 UK-first employment infrastructure</span>
+        <span class="dot">•</span>
+        <span>⭐ Contracts + audit trail</span>
+        <span class="dot">•</span>
+        <span>🔒 HMRC compliance-by-design</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="ORDIN Home">
+        <span class="brand__mark">o.</span>
+        <span class="brand__text">ordin.</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Primary">
+        <div class="nav__item">
+          <button class="nav__link" data-mega-open="offer" aria-haspopup="true" aria-expanded="false">
+            What we offer <span class="caret">▼</span>
+          </button>
+        </div>
+
+        <div class="nav__item">
+          <a class="nav__link" href="who-we-serve.html">Who we serve</a>
+        </div>
+
+        <div class="nav__item">
+          <a class="nav__link is-active" href="pricing.html">Pricing</a>
+        </div>
+
+        <div class="nav__item">
+          <button class="nav__link" data-mega-open="resources" aria-haspopup="true" aria-expanded="false">
+            Resources <span class="caret">▼</span>
+          </button>
+        </div>
+      </nav>
+
+      <div class="nav__actions">
+        <a class="btn btn-ghost" href="auth/login.html">Log in</a>
+        <a class="btn btn-primary" href="book-demo.html">Book a demo</a>
+      </div>
+    </div>
+
+    <!-- MEGA MENU: WHAT WE OFFER -->
+    <div class="mega" id="mega-offer" role="dialog" aria-label="What we offer">
+      <div class="container mega__panel">
+        <div class="mega__left" role="tablist" aria-label="Offer categories">
+          <button class="mega__tab is-active" data-offer-tab="payroll" role="tab" aria-selected="true">
+            <span class="ico">🏦</span> Payroll
+          </button>
+          <button class="mega__tab" data-offer-tab="hr" role="tab" aria-selected="false">
+            <span class="ico">🧑‍💼</span> HR
+          </button>
+          <button class="mega__tab" data-offer-tab="it" role="tab" aria-selected="false">
+            <span class="ico">💻</span> IT
+          </button>
+          <button class="mega__tab" data-offer-tab="services" role="tab" aria-selected="false">
+            <span class="ico">🧩</span> Services
+          </button>
+          <button class="mega__tab" data-offer-tab="platform" role="tab" aria-selected="false">
+            <span class="ico">🗂️</span> Platform
+          </button>
+
+          <!-- NEW: Lead tab -->
+          <button class="mega__tab" data-offer-tab="lead" role="tab" aria-selected="false">
+            <span class="ico">🧲</span> Lead
+          </button>
+
+          <a class="btn btn-soft mega__cta" href="what-we-offer.html">
+            See all products
+          </a>
+        </div>
+
+        <div class="mega__right">
+          <div class="mega__content is-active" data-offer-panel="payroll" role="tabpanel">
+            <h3>Payroll</h3>
+            <p>Payroll + contractor workflows, with HMRC-friendly reporting.</p>
+            <div class="mega__grid">
+              <a class="tile" href="pricing.html#payroll" data-pricing-open="payroll">
+                <div class="tile__title">Payroll pricing</div>
+                <div class="tile__desc">UK payroll, contractors, EOR/PEO.</div>
+              </a>
+              <a class="tile" href="pricing.html#payroll" data-pricing-open="payroll">
+                <div class="tile__title">Contractor compliance</div>
+                <div class="tile__desc">Contracts → invoices → approvals.</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="mega__content" data-offer-panel="hr" role="tabpanel">
+            <h3>HR</h3>
+            <p>HRIS + engagement + planning with audit-friendly records.</p>
+            <div class="mega__grid">
+              <a class="tile" href="pricing.html#hr" data-pricing-open="hr">
+                <div class="tile__title">HR pricing</div>
+                <div class="tile__desc">HRIS, engage, compensation.</div>
+              </a>
+              <a class="tile" href="pricing.html#hr" data-pricing-open="hr">
+                <div class="tile__title">Hiring + onboarding</div>
+                <div class="tile__desc">Offer letters, checklists, tasks.</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="mega__content" data-offer-panel="it" role="tabpanel">
+            <h3>IT</h3>
+            <p>Device + access workflows that scale as you grow.</p>
+            <div class="mega__grid">
+              <a class="tile" href="pricing.html#it" data-pricing-open="it">
+                <div class="tile__title">IT pricing</div>
+                <div class="tile__desc">Device lifecycle + access controls.</div>
+              </a>
+              <a class="tile" href="pricing.html#it" data-pricing-open="it">
+                <div class="tile__title">Provisioning</div>
+                <div class="tile__desc">Onboard/offboard checklists.</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="mega__content" data-offer-panel="services" role="tabpanel">
+            <h3>Services</h3>
+            <p>Implementation + compliance support for busy teams.</p>
+            <div class="mega__grid">
+              <a class="tile" href="pricing.html#services" data-pricing-open="services">
+                <div class="tile__title">Services pricing</div>
+                <div class="tile__desc">Implementation, advisory, support.</div>
+              </a>
+              <a class="tile" href="pricing.html#services" data-pricing-open="services">
+                <div class="tile__title">HMRC compliance</div>
+                <div class="tile__desc">Policies, audits, readiness.</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="mega__content" data-offer-panel="platform" role="tabpanel">
+            <h3>Platform</h3>
+            <p>Contracts + e-sign + audit trail built into workflows.</p>
+            <div class="mega__grid">
+              <a class="tile" href="what-we-offer.html#platform">
+                <div class="tile__title">Contracts + e-sign</div>
+                <div class="tile__desc">Templates → send → sign → store.</div>
+              </a>
+              <a class="tile" href="what-we-offer.html#platform">
+                <div class="tile__title">Audit trail</div>
+                <div class="tile__desc">Immutable approvals and changes.</div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <button class="mega__close" type="button" data-mega-close aria-label="Close menu">✕</button>
+      </div>
+    </div>
+
+    <!-- MEGA MENU: RESOURCES -->
+    <div class="mega" id="mega-resources" role="dialog" aria-label="Resources">
+      <div class="container mega__panel mega__panel--simple">
+        <div class="mega__simple">
+          <a class="tile" href="resources.html#guides">
+            <div class="tile__title">Guides</div>
+            <div class="tile__desc">Simple explainers for UK teams.</div>
+          </a>
+          <a class="tile" href="resources.html#templates">
+            <div class="tile__title">Templates</div>
+            <div class="tile__desc">Contracts, policies, onboarding checklists.</div>
+          </a>
+          <a class="tile" href="resources.html#updates">
+            <div class="tile__title">Product updates</div>
+            <div class="tile__desc">What’s new in ORDIN.</div>
+          </a>
+        </div>
+        <button class="mega__close" type="button" data-mega-close aria-label="Close menu">✕</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================
+       PRICING (Deel-like)
+  ========================== -->
+  <main>
+    <!-- LIGHT HERO -->
+    <section class="pricingHero" id="pricing-top">
+      <div class="container pricingHero__inner">
+        <h1 class="pricingHero__title">Transparent and fair pricing<br/>that grows with your business</h1>
+        <p class="pricingHero__sub">
+          Whether you want to hire contractors in the UK or run payroll for your own entities — ORDIN keeps everything clean and compliant.
+        </p>
+
+        <!-- Size selector (visual only like Deel) -->
+        <div class="sizeBox" aria-label="Company size">
+          <div class="sizeBox__label">What is the size of your company?</div>
+          <div class="sizeBox__pills" role="group" aria-label="Company size options">
+            <button class="sizePill is-active" type="button" data-size="1-20">1–20 people</button>
+            <button class="sizePill" type="button" data-size="21-200">21–200 people</button>
+            <button class="sizePill" type="button" data-size="201-1000">201–1000 people</button>
+            <button class="sizePill" type="button" data-size="1001-2000">1001–2000 people</button>
+            <button class="sizePill" type="button" data-size="2001+">2001+ people</button>
+          </div>
+        </div>
+
+        <!-- Main tabs (NO OPEN BUTTONS) -->
+        <div class="pricingTabs" role="tablist" aria-label="Pricing categories">
+          <button class="pricingTab is-active" role="tab" aria-selected="true" data-tab="payroll">
+            <span class="pricingTab__ico">🌐</span>
+            <span class="pricingTab__text">ORDIN Payroll</span>
+          </button>
+          <button class="pricingTab" role="tab" aria-selected="false" data-tab="hr">
+            <span class="pricingTab__ico">🧑‍💼</span>
+            <span class="pricingTab__text">ORDIN HR</span>
+          </button>
+          <button class="pricingTab" role="tab" aria-selected="false" data-tab="it">
+            <span class="pricingTab__ico">💻</span>
+            <span class="pricingTab__text">ORDIN IT</span>
+          </button>
+          <button class="pricingTab" role="tab" aria-selected="false" data-tab="services">
+            <span class="pricingTab__ico">🧩</span>
+            <span class="pricingTab__text">ORDIN Services</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARDS AREA (cream section like Deel) -->
+    <section class="pricingBody">
+
+      <!-- PAYROLL -->
+      <div class="container pricingPanel is-active" data-panel="payroll" role="tabpanel" aria-label="Payroll prices">
+        <div class="pricingGrid">
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>ORDIN Employer of Record (EOR)</h3>
+              <p>Hire employees without setting up local entities.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£599 <span>per employee / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Employment contracts & onboarding</li>
+              <li>Payroll, tax, NI handled</li>
+              <li>Local compliance guidance</li>
+              <li>Reduced employment risk</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>ORDIN Contractor Management</h3>
+              <p>Simplify contractor hiring, payments, and compliance.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£49 <span>per contractor / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Contract templates + e-sign</li>
+              <li>Invoice tracking & approvals</li>
+              <li>Onboarding workflows</li>
+              <li>Audit trail & documentation</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>ORDIN Contractor of Record</h3>
+              <p>We act as the contractor’s legal engager.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£325 <span>per contractor / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="contact.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>IR35 & status support</li>
+              <li>Tax, NI and compliance coverage</li>
+              <li>Reduced misclassification risk</li>
+              <li>Contract & invoice automation</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>UK Payroll</h3>
+              <p>Run payroll inputs, payslips, and reporting.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£29 <span>per employee / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Payslip-ready payroll inputs</li>
+              <li>HMRC reporting & submissions</li>
+              <li>Contracts + audit trail</li>
+              <li>Onboarding checklists</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>ORDIN PEO</h3>
+              <p>HR, payroll, and benefits support with shared admin.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£95 <span>per employee / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="contact.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Payroll + HR administration</li>
+              <li>Shared responsibility model</li>
+              <li>Tax & labour compliance support</li>
+              <li>Onboarding assistance</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- HR -->
+      <div class="container pricingPanel" data-panel="hr" role="tabpanel" aria-label="HR prices">
+        <div class="pricingGrid">
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>ORDIN Engage</h3>
+              <p>Performance, feedback, and engagement.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£20 <span>per user / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Performance cycles + reviews</li>
+              <li>Goals & OKRs</li>
+              <li>Surveys + insights</li>
+              <li>Manager tools</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>ORDIN HRIS</h3>
+              <p>People records, documents, approvals.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£8 <span>per user / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>People profiles + documents</li>
+              <li>Approvals & reminders</li>
+              <li>Policy tracking</li>
+              <li>Audit-friendly history</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>ORDIN Compensation</h3>
+              <p>Comp reviews, budgets, approvals.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£15 <span>per user / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Comp cycles + approvals</li>
+              <li>Budget planning</li>
+              <li>Role/level bands</li>
+              <li>Exportable reports</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>Workforce Planning</h3>
+              <p>Headcount planning & org changes.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£18 <span>per user / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Org planning</li>
+              <li>Scenario planning</li>
+              <li>Budget visibility</li>
+              <li>Approvals + audit trail</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- IT -->
+      <div class="container pricingPanel" data-panel="it" role="tabpanel" aria-label="IT prices">
+        <div class="pricingGrid">
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>Device Lifecycle</h3>
+              <p>Provisioning, tracking, and offboarding.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£7 <span>per user / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Device assignments</li>
+              <li>Offboarding checklists</li>
+              <li>Asset logs</li>
+              <li>Audit history</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>Access Management</h3>
+              <p>Roles, permissions, and access logs.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£6 <span>per user / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Role-based access</li>
+              <li>Access approvals</li>
+              <li>Change logs</li>
+              <li>Security-ready records</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>IT Onboarding</h3>
+              <p>Setup tasks and permissions for new starters.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£5 <span>per user / month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="book-demo.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Task templates</li>
+              <li>Checklists</li>
+              <li>Approvals</li>
+              <li>Audit trail</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <div class="container pricingPanel" data-panel="services" role="tabpanel" aria-label="Services prices">
+        <div class="pricingGrid">
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>Implementation</h3>
+              <p>We help you go live quickly.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£499 <span>one-time</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="contact.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Setup + onboarding</li>
+              <li>Template configuration</li>
+              <li>Workflow mapping</li>
+              <li>Training session</li>
+            </ul>
+          </article>
+
+          <article class="priceCard">
+            <div class="priceCard__head">
+              <h3>HMRC Compliance Support</h3>
+              <p>Documentation, audits, readiness.</p>
+            </div>
+
+            <div class="priceCard__price">
+              <div class="priceCard__small">Starting at</div>
+              <div class="priceCard__big">£250 <span>/ month</span></div>
+            </div>
+
+            <div class="priceCard__cta">
+              <a class="btn btn-black btn-wide" href="contact.html">Get started</a>
+            </div>
+
+            <ul class="priceCard__list">
+              <li>Policy templates</li>
+              <li>Audit preparation</li>
+              <li>IR35 support</li>
+              <li>Compliance checklists</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="js/site.js"></script>
+</body>
+</html>
