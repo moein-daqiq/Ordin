@@ -567,3 +567,42 @@ body{
 .cards{
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
 }
+/* ============================= */
+/* Video polish – smaller dot + play icon */
+/* ============================= */
+
+/* Reduce any center overlay dot / highlight */
+.videoCard__video::poster,
+.videoCard__video {
+  background-size: cover;
+}
+
+/* If the green dot is an overlay element */
+.videoCard::before {
+  transform: scale(0.4);   /* makes dot much smaller */
+  opacity: 0.25;           /* softer */
+}
+
+/* Smaller, cleaner play button */
+.videoCard__play {
+  width: 56px;             /* was large – now subtle */
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+/* Smaller play triangle */
+.videoCard__play::before {
+  border-left-width: 12px;
+  border-top-width: 8px;
+  border-bottom-width: 8px;
+  margin-left: 3px;
+}
+
+/* Hover polish (still premium) */
+.videoCard__play:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  background: rgba(0, 0, 0, 0.65);
+}
+
