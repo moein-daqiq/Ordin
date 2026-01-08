@@ -31,25 +31,16 @@
 
       <nav class="nav__links" aria-label="Primary">
         <div class="nav__item">
-          <button class="nav__link" data-mega-open="offer">
-            What we offer <span class="caret">▼</span>
-          </button>
+          <button class="nav__link" data-mega-open="offer">What we offer ▼</button>
         </div>
-
         <div class="nav__item">
-          <button class="nav__link" data-mega-open="serve">
-            Who we serve <span class="caret">▼</span>
-          </button>
+          <button class="nav__link" data-mega-open="serve">Who we serve ▼</button>
         </div>
-
         <div class="nav__item">
           <a class="nav__link" href="pricing.html">Pricing</a>
         </div>
-
         <div class="nav__item">
-          <button class="nav__link" data-mega-open="resources">
-            Resources <span class="caret">▼</span>
-          </button>
+          <button class="nav__link" data-mega-open="resources">Resources ▼</button>
         </div>
       </nav>
 
@@ -82,7 +73,7 @@
           </div>
         </div>
 
-        <!-- ✅ FIXED VIDEO (ONLY CHANGE MADE) -->
+        <!-- VIDEO CARD (FIXED) -->
         <div class="hero_right">
           <div class="videoCard" aria-label="Product preview">
 
@@ -106,7 +97,6 @@
 
           </div>
         </div>
-        <!-- ✅ END VIDEO -->
 
       </div>
     </section>
@@ -135,14 +125,13 @@
     </footer>
   </main>
 
-  <script src="js/site.js"></script>
-
+  <!-- VIDEO PLAY SCRIPT (FIXED) -->
   <script>
     (function () {
       const card = document.querySelector(".videoCard");
       if (!card) return;
 
-      const vid = card.querySelector("video");
+      const vid = card.querySelector(".videoCard__video");
       const btn = card.querySelector(".videoCard__play");
       if (!vid || !btn) return;
 
@@ -158,22 +147,17 @@
 
       showBtn();
 
-      btn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
+      btn.addEventListener("click", async () => {
         try {
           if (vid.paused) {
             vid.muted = false;
-            vid.volume = 1;
             await vid.play();
             hideBtn();
           } else {
             vid.pause();
             showBtn();
           }
-        } catch (err) {
-          console.log("Video blocked:", err);
+        } catch (e) {
           showBtn();
         }
       });
