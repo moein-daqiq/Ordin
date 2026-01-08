@@ -553,8 +553,10 @@ body{
   transform:translate(-50%,-50%);
   z-index:3;
 }
+
 /* Hide the very top strip (as requested) */
 .topstrip { display:none !important; }
+
 /* Make the section green lighter at top and darker at bottom */
 .section--light{
   background: linear-gradient(
@@ -563,46 +565,70 @@ body{
     rgba(6,17,12,.55) 100%
   ) !important;
 }
+
 /* Prevent the big empty gap: auto-fit cards nicely into rows */
 .cards{
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
 }
+
 /* ============================= */
 /* Video polish – smaller dot + play icon */
 /* ============================= */
 
-/* Reduce any center overlay dot / highlight */
-.videoCard__video::poster,
-.videoCard__video {
-  background-size: cover;
+/* Subtle premium dot overlay (small + soft). If you don't want any dot at all, set opacity:0 */
+.videoCard::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  transform:translate(-50%,-50%);
+  background:rgba(24,179,122,.35);
+  filter:blur(.2px);
+  opacity:.18;  /* small + soft */
+  pointer-events:none;
+  z-index:2;
 }
 
-/* If the green dot is an overlay element */
-.videoCard::before {
-  transform: scale(0.4);   /* makes dot much smaller */
-  opacity: 0.25;           /* softer */
-}
-
-/* Smaller, cleaner play button */
-.videoCard__play {
-  width: 56px;             /* was large – now subtle */
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.55);
+/* Smaller, cleaner play button (and only show when JS adds .is-visible) */
+.videoCard__play{
+  width:52px;
+  height:52px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(0,0,0,.50);
   backdrop-filter: blur(6px);
+  box-shadow:0 10px 24px rgba(0,0,0,.35);
+  display:grid;
+  place-items:center;
+
+  /* default hidden (autoplay success = hidden) */
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease, background .25s ease;
 }
 
-/* Smaller play triangle */
-.videoCard__play::before {
-  border-left-width: 12px;
-  border-top-width: 8px;
-  border-bottom-width: 8px;
-  margin-left: 3px;
+/* Visible state (autoplay blocked / paused) */
+.videoCard__play.is-visible{
+  opacity:1;
+  pointer-events:auto;
 }
 
-/* Hover polish (still premium) */
-.videoCard__play:hover {
-  transform: translate(-50%, -50%) scale(1.05);
-  background: rgba(0, 0, 0, 0.65);
+/* Play triangle */
+.videoCard__play::before{
+  content:"";
+  display:block;
+  width:0;height:0;
+  border-left:12px solid rgba(255,255,255,.92);
+  border-top:8px solid transparent;
+  border-bottom:8px solid transparent;
+  margin-left:2px;
 }
 
+/* Hover polish */
+.videoCard__play.is-visible:hover{
+  transform:translate(-50%,-50%) scale(1.06);
+  background:rgba(0,0,0,.62);
+}
